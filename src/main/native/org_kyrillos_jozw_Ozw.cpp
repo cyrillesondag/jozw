@@ -35,9 +35,11 @@ public:
     explicit ValueIdWrapper(JNIEnv *env);
     void destroy(JNIEnv *env);
     jobject toJava(JNIEnv *env, const OpenZWave::ValueID *valueID);
+    OpenZWave::ValueID toValueID(JNIEnv *env, jobject object);
 private:
     jclass clazz;
     jmethodID constructor;
+    jmethodID nativePtr;
 };
 
 ValueIdWrapper *valueIdWrapper;
@@ -45,6 +47,7 @@ ValueIdWrapper *valueIdWrapper;
 ValueIdWrapper::ValueIdWrapper(JNIEnv *env) {
     clazz = reinterpret_cast<jclass> (env->NewGlobalRef(env->FindClass("org/kyrillos/jozw/ValueId")));
     constructor = env->GetMethodID(clazz, "<init>", "(JSISSSI)V");
+    nativePtr = env->GetFieldID(env, clazz, "nativePtr", "J");
 }
 
 void ValueIdWrapper::destroy(JNIEnv *env) {
@@ -67,6 +70,11 @@ jobject ValueIdWrapper::toJava(JNIEnv *env, OpenZWave::ValueID const *valueID) {
             valueID->GetIndex(),
             valueID->GetType()
     );
+}
+
+OpenZWave::ValueID* toValueID(JNIEnv *env, jobject object){
+    jlong ptr = env->GetLongField(env, object, nativePtr);
+    return reinterpret_cast<OpenZWave::ValueID*>(ptr)
 }
 
 class NotificationWrapper {
@@ -421,7 +429,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setPollInterval
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_enablePoll
         (JNIEnv *env, jobject instance, jobject valueId, jint itensity){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->EnablePoll(valueIdWrapper->toJava()toValueID(env, valueId), toUint8(env, itensity)));
+    return jboolean (manager->EnablePoll(valueIdWrapper->toValueID(env, valueId), static_cast<uint8>(itensity)));
 }
 
 /*
@@ -432,7 +440,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_enablePoll
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_disablePoll
         (JNIEnv *env, jobject instance, jobject valueId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->DisablePoll(toValueID(env, valueId)));
+    return jboolean (manager->DisablePoll(valueIdWrapper->toValueID(env, valueId)));
 }
 
 /*
@@ -443,7 +451,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_disablePoll
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isPolled
         (JNIEnv *env, jobject instance, jobject valueId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->IsValuePolled(toValueID(env, valueId)));
+    return jboolean (manager->IsValuePolled(valueIdWrapper->toValueID(env, valueId)));
 }
 
 /*
@@ -454,7 +462,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isPolled
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setPollIntensity
         (JNIEnv *env, jobject instance, jobject valueId, jint itensity){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    manager->SetPollIntensity(toValueID(env, valueId), toUint8(env, itensity));
+    manager->SetPollIntensity(valueIdWrapper->toValueID(env, valueId), static_cast<uint8>(itensity));
 }
 
 /*
@@ -465,7 +473,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setPollIntensity
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getPollIntensity
         (JNIEnv *env, jobject instance, jobject valueId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jint (manager->GetPollIntensity(toValueID(env, valueId)));
+    return jint (manager->GetPollIntensity(valueIdWrapper->toValueID(env, valueId)));
 }
 
 /*
@@ -476,7 +484,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getPollIntensity
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_refreshNodeInfo
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->RefreshNodeInfo(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jboolean (manager->RefreshNodeInfo(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 
 /*
@@ -487,7 +495,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_refreshNodeInfo
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_requestNodeState
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->RequestNodeState(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jboolean (manager->RequestNodeState(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 
 /*
@@ -498,7 +506,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_requestNodeState
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_requestNodeDynamic
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    jboolean (manager->RequestNodeDynamic(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    jboolean (manager->RequestNodeDynamic(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 
 /*
@@ -509,7 +517,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_requestNodeDynamic
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeListeningDevice
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->IsNodeListeningDevice(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jboolean (manager->IsNodeListeningDevice(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 
 /*
@@ -520,7 +528,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeListeningDevice
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeFrequentListeningDevice
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->IsNodeFrequentListeningDevice(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jboolean (manager->IsNodeFrequentListeningDevice(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 
 /*
@@ -531,7 +539,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeFrequentListeningDev
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeBeamingDevice
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->IsNodeBeamingDevice(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jboolean (manager->IsNodeBeamingDevice(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 
 /*
@@ -542,7 +550,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeBeamingDevice
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeRoutingDevice
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->IsNodeRoutingDevice(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jboolean (manager->IsNodeRoutingDevice(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 
 /*
@@ -553,7 +561,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeRoutingDevice
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeSecurityDevice
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->IsNodeSecurityDevice(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jboolean (manager->IsNodeSecurityDevice(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 
 /*
@@ -564,7 +572,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeSecurityDevice
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeMaxBaudRate
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jint (manager->GetNodeMaxBaudRate(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jint (manager->GetNodeMaxBaudRate(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 
 /*
@@ -575,7 +583,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeMaxBaudRate
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeVersion
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->GetNodeVersion(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jboolean (manager->GetNodeVersion(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 
 /*
@@ -586,7 +594,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeVersion
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeSecurity
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jint (manager->GetNodeSecurity(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jint (manager->GetNodeSecurity(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 
 /*
@@ -597,7 +605,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeSecurity
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeZWavePlus
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->IsNodeZWavePlus(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jboolean (manager->IsNodeZWavePlus(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 
 /*
@@ -608,7 +616,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeZWavePlus
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeBasic
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jint (manager->GetNodeBasic(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jint (manager->GetNodeBasic(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 
 /*
@@ -619,7 +627,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeBasic
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeGeneric
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jint (manager->GetNodeGeneric(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jint (manager->GetNodeGeneric(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 
 /*
@@ -630,7 +638,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeGeneric
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeSpecific
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jint (manager->GetNodeSpecific(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jint (manager->GetNodeSpecific(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 
 /*
@@ -641,7 +649,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeSpecific
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeType
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    const std::string &_type = manager->GetNodeType(static_cast<const uint32>(homeId), toUint8(env, nodeId));
+    const std::string &_type = manager->GetNodeType(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId));
     if (_type != nullptr){
         return env->NewStringUTF(_type.data());
     }
@@ -657,7 +665,7 @@ JNIEXPORT jintArray JNICALL Java_org_kyrillos_jozw_Ozw_getNodeNeighbors
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
     uint8 **neighbors = nullptr;
-    int numNeighbors = manager->GetNodeNeighbors(static_cast<const uint32>(homeId), toUint8(env, nodeId), neighbors);
+    int numNeighbors = manager->GetNodeNeighbors(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId), neighbors);
     if(neighbors == nullptr){
         return nullptr;
     }
@@ -680,7 +688,7 @@ JNIEXPORT jintArray JNICALL Java_org_kyrillos_jozw_Ozw_getNodeNeighbors
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeManufacturerName
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    const std::string &_manufacturer = manager->GetNodeManufacturerName(static_cast<const uint32>(homeId), toUint8(env, nodeId));
+    const std::string &_manufacturer = manager->GetNodeManufacturerName(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId));
     if (_manufacturer != nullptr){
         return env->NewStringUTF(_manufacturer.data());
     }
@@ -695,7 +703,7 @@ JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeManufacturerName
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeProductName
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    const std::string &_productName = manager->GetNodeProductName(static_cast<const uint32>(homeId), toUint8(env, nodeId));
+    const std::string &_productName = manager->GetNodeProductName(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId));
     if (_productName != nullptr){
         return env->NewStringUTF(_productName.data());
     }
@@ -709,7 +717,7 @@ JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeProductName
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeName
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    const std::string &_nodeName = manager->GetNodeName(static_cast<const uint32>(homeId), toUint8(env, nodeId));
+    const std::string &_nodeName = manager->GetNodeName(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId));
     if (_nodeName != nullptr){
         return env->NewStringUTF(_nodeName.data());
     }
@@ -723,7 +731,7 @@ JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeName
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeLocation
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    const std::string &_nodeLocation = manager->GetNodeLocation(static_cast<const uint32>(homeId), toUint8(env, nodeId));
+    const std::string &_nodeLocation = manager->GetNodeLocation(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId));
     if (_nodeLocation != nullptr){
         return env->NewStringUTF(_nodeLocation.data());
     }
@@ -738,7 +746,7 @@ JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeLocation
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeManufacturerId
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    const std::string &_nodeManufacturer = manager->GetNodeManufacturerId(static_cast<const uint32>(homeId), toUint8(env, nodeId));
+    const std::string &_nodeManufacturer = manager->GetNodeManufacturerId(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId));
     if (_nodeManufacturer != nullptr){
         return env->NewStringUTF(_nodeManufacturer.data());
     }
@@ -753,7 +761,7 @@ JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeManufacturerId
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeProductType
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    const std::string &_nodeProductType = manager->GetNodeProductType(static_cast<const uint32>(homeId), toUint8(env, nodeId));
+    const std::string &_nodeProductType = manager->GetNodeProductType(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId));
     if (_nodeProductType != nullptr){
         return env->NewStringUTF(_nodeProductType.data());
     }
@@ -768,7 +776,7 @@ JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeProductType
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeProductId
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    const std::string &_nodeProductId = manager->GetNodeProductId(static_cast<const uint32>(homeId), toUint8(env, nodeId));
+    const std::string &_nodeProductId = manager->GetNodeProductId(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId));
     if (_nodeProductId != nullptr){
         return env->NewStringUTF(_nodeProductId.data());
     }
@@ -785,7 +793,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setNodeManufacturerName
     if(name != nullptr){
         OpenZWave::Manager *manager = OpenZWave::Manager::Get();
         const char *_name = env->GetStringUTFChars(name, nullptr);
-        manager->SetNodeManufacturerName(static_cast<const uint32>(homeId), toUint8(env, nodeId), _name);
+        manager->SetNodeManufacturerName(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId), _name);
     }
 }
 
@@ -799,7 +807,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setNodeProductName
     if(productName != nullptr){
         OpenZWave::Manager *manager = OpenZWave::Manager::Get();
         const char *_productName = env->GetStringUTFChars(productName, nullptr);
-        manager->SetNodeManufacturerName(static_cast<const uint32>(homeId), toUint8(env, nodeId), _productName);
+        manager->SetNodeManufacturerName(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId), _productName);
     }
 }
 
@@ -813,7 +821,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setNodeName
     if(nodeName != nullptr){
         OpenZWave::Manager *manager = OpenZWave::Manager::Get();
         const char *_nodeName = env->GetStringUTFChars(nodeName, nullptr);
-        manager->SetNodeManufacturerName(static_cast<const uint32>(homeId), toUint8(env, nodeId), _nodeName);
+        manager->SetNodeManufacturerName(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId), _nodeName);
     }
 }
 
@@ -827,7 +835,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setNodeLocation
     if(location != nullptr){
         OpenZWave::Manager *manager = OpenZWave::Manager::Get();
         const char *_nodeLocation = env->GetStringUTFChars(location, nullptr);
-        manager->SetNodeManufacturerName(static_cast<const uint32>(homeId), toUint8(env, nodeId), _nodeLocation);
+        manager->SetNodeManufacturerName(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId), _nodeLocation);
     }
 }
 
@@ -839,7 +847,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setNodeLocation
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setNodeOn
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    manager->SetNodeOn(static_cast<const uint32>(homeId), toUint8(env, nodeId));
+    manager->SetNodeOn(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId));
 }
 
 /*
@@ -850,7 +858,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setNodeOn
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setNodeOff
         (JNIEnv *env, jobject instance,jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    manager->SetNodeOff(static_cast<const uint32>(homeId), toUint8(env, nodeId));
+    manager->SetNodeOff(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId));
 }
 /*
  * Class:     my_project_openzwave_Manager
@@ -860,7 +868,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setNodeOff
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setNodeLevel
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId, jint level){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    manager->SetNodeLevel(static_cast<const uint32>(homeId), toUint8(env, nodeId), toUint8(env, level));
+    manager->SetNodeLevel(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId), static_cast<uint8>(level));
 }
 
 /*
@@ -871,7 +879,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setNodeLevel
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeInfoReceived
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->IsNodeInfoReceived(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jboolean (manager->IsNodeInfoReceived(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 
 /*
@@ -886,8 +894,8 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_getNodeClassInformation
     if (className != nullptr) {
         std::string _temp = env->GetStringUTFChars(className, nullptr);
     }
-    uint8 _version = toUint8(env, classVersion);
-    return jboolean (manager->GetNodeClassInformation(static_cast<const uint32>(homeId), toUint8(env, nodeId), toUint8(env, commandClassId), &_className, &_version));
+    uint8 _version = static_cast<uint8>(classVersion);
+    return jboolean (manager->GetNodeClassInformation(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId), static_cast<uint8>(commandClassId), &_className, &_version));
 }
 
 /*
@@ -898,7 +906,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_getNodeClassInformation
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeAwake
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->IsNodeAwake(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jboolean (manager->IsNodeAwake(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 
 /*
@@ -909,7 +917,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeAwake
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeFailed
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->IsNodeFailed(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jboolean (manager->IsNodeFailed(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 /*
  * Class:     my_project_openzwave_Manager
@@ -919,7 +927,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeFailed
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeQueryStage
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId) {
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    const std::string &_queryStage = manager->GetNodeQueryStage(static_cast<const uint32>(homeId), toUint8(env, nodeId));
+    const std::string &_queryStage = manager->GetNodeQueryStage(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId));
     if(_queryStage != nullptr){
         return env->NewStringUTF(_queryStage.data());
     }
@@ -934,7 +942,7 @@ JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeQueryStage
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeDeviceType
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId) {
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jint(manager->GetNodeDeviceType(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jint(manager->GetNodeDeviceType(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 /*
  * Class:     my_project_openzwave_Manager
@@ -944,7 +952,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeDeviceType
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeDeviceTypeString
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId) {
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    const std::string &_typeString = manager->GetNodeDeviceTypeString(static_cast<const uint32>(homeId), toUint8(env, nodeId));
+    const std::string &_typeString = manager->GetNodeDeviceTypeString(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId));
     if(_typeString != nullptr){
         return env->NewStringUTF(_typeString.data());
     }
@@ -958,7 +966,7 @@ JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeDeviceTypeString
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeRole
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId) {
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jint(manager->GetNodeRole(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jint(manager->GetNodeRole(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 /*
  * Class:     my_project_openzwave_Manager
@@ -968,7 +976,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeRole
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeRoleString
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId) {
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    const std::string &_role = manager->GetNodeRoleString(static_cast<const uint32>(homeId), toUint8(env, nodeId));
+    const std::string &_role = manager->GetNodeRoleString(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId));
     if(_role != nullptr){
         return env->NewStringUTF(_role.data());
     }
@@ -982,7 +990,7 @@ JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeRoleString
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodePlusType
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId) {
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jint(manager->GetNodePlusType(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jint(manager->GetNodePlusType(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 /*
  * Class:     my_project_openzwave_Manager
@@ -992,7 +1000,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodePlusType
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodePlusTypeString
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId) {
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    const std::string &_plusType = manager->GetNodePlusTypeString(static_cast<const uint32>(homeId), toUint8(env, nodeId));
+    const std::string &_plusType = manager->GetNodePlusTypeString(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId));
     if(_plusType != nullptr){
         return env->NewStringUTF(_plusType.data());
     }
@@ -1006,7 +1014,7 @@ JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodePlusTypeString
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getValueLabel
         (JNIEnv *env, jobject instance, jobject valueId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    const std::string &_label = manager->GetValueLabel(toValueID(env, valueId));
+    const std::string &_label = manager->GetValueLabel(valueIdWrapper->toValueID(env, valueId));
     if (_label != nullptr){
         return env->NewStringUTF(_label.data());
     }
@@ -1023,7 +1031,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setValueLabel
     if(label != nullptr){
         OpenZWave::Manager *manager = OpenZWave::Manager::Get();
         const char *_label = env->GetStringUTFChars(label, nullptr);
-        manager->SetValueLabel(toValueID(env, valueId), _label);
+        manager->SetValueLabel(valueIdWrapper->toValueID(env, valueId), _label);
     }
 }
 
@@ -1035,7 +1043,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setValueLabel
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getValueUnits
         (JNIEnv *env, jobject instance, jobject valueId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    const std::string &_valueUnit = manager->GetValueLabel(toValueID(env, valueId));
+    const std::string &_valueUnit = manager->GetValueLabel(valueIdWrapper->toValueID(env, valueId));
     if (_valueUnit != nullptr){
         return env->NewStringUTF(_valueUnit.data());
     }
@@ -1052,7 +1060,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setValueUnits
     if(unit != nullptr){
         OpenZWave::Manager *manager = OpenZWave::Manager::Get();
         const char *_unit = env->GetStringUTFChars(unit, nullptr);
-        manager->SetValueLabel(toValueID(env, valueId), _unit);
+        manager->SetValueLabel(valueIdWrapper->toValueID(env, valueId), _unit);
     }
 }
 
@@ -1064,7 +1072,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setValueUnits
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getValueHelp
         (JNIEnv *env, jobject instance, jobject valueId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    const std::string &_valueHelp = manager->GetValueHelp(toValueID(env, valueId));
+    const std::string &_valueHelp = manager->GetValueHelp(valueIdWrapper->toValueID(env, valueId));
     if (_valueHelp != nullptr){
         return env->NewStringUTF(_valueHelp.data());
     }
@@ -1081,7 +1089,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setValueHelp
     if(help != nullptr){
         OpenZWave::Manager *manager = OpenZWave::Manager::Get();
         const char *_help = env->GetStringUTFChars(help, nullptr);
-        manager->SetValueHelp(toValueID(env, valueId), _help);
+        manager->SetValueHelp(valueIdWrapper->toValueID(env, valueId), _help);
     }
 }
 
@@ -1093,7 +1101,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setValueHelp
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getValueMin
         (JNIEnv *env, jobject instance, jobject valueId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jint (manager->GetValueMin(toValueID(env, valueId)));
+    return jint (manager->GetValueMin(valueIdWrapper->toValueID(env, valueId)));
 }
 
 /*
@@ -1104,7 +1112,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getValueMin
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getValueMax
         (JNIEnv *env, jobject instance, jobject valueId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jint (manager->GetValueMax(toValueID(env, valueId)));
+    return jint (manager->GetValueMax(valueIdWrapper->toValueID(env, valueId)));
 }
 
 /*
@@ -1115,7 +1123,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getValueMax
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isValueReadOnly
         (JNIEnv *env, jobject instance, jobject valueId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->IsValueReadOnly(toValueID(env, valueId)));
+    return jboolean (manager->IsValueReadOnly(valueIdWrapper->toValueID(env, valueId)));
 }
 
 /*
@@ -1126,7 +1134,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isValueReadOnly
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isValueWriteOnly
         (JNIEnv *env, jobject instance, jobject valueId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->IsValueWriteOnly(toValueID(env, valueId)));
+    return jboolean (manager->IsValueWriteOnly(valueIdWrapper->toValueID(env, valueId)));
 }
 
 /*
@@ -1137,7 +1145,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isValueWriteOnly
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isValueSet
         (JNIEnv *env, jobject instance, jobject valueId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->IsValueSet(toValueID(env, valueId)));
+    return jboolean (manager->IsValueSet(valueIdWrapper->toValueID(env, valueId)));
 }
 
 /*
@@ -1148,7 +1156,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isValueSet
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isValuePolled
         (JNIEnv *env, jobject instance, jobject valueId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->IsValuePolled(toValueID(env, valueId)));
+    return jboolean (manager->IsValuePolled(valueIdWrapper->toValueID(env, valueId)));
 }
 
 /*
@@ -1199,7 +1207,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_setValue
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_refreshValue
         (JNIEnv *env, jobject instance, jobject valueId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->RefreshValue(toValueID(env, valueId)));
+    return jboolean (manager->RefreshValue(valueIdWrapper->toValueID(env, valueId)));
 }
 
 /*
@@ -1210,7 +1218,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_refreshValue
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setChangeVerified
         (JNIEnv *env, jobject instance, jobject valueId, jboolean verify){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    manager->SetChangeVerified(toValueID(env, valueId), verify);
+    manager->SetChangeVerified(valueIdWrapper->toValueID(env, valueId), verify);
 }
 
 /*
@@ -1221,7 +1229,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setChangeVerified
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_getChangeVerified
         (JNIEnv *env, jobject instance, jobject valueId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->GetChangeVerified(toValueID(env, valueId)));
+    return jboolean (manager->GetChangeVerified(valueIdWrapper->toValueID(env, valueId)));
 }
 
 /*
@@ -1232,7 +1240,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_getChangeVerified
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_pressButton
         (JNIEnv *env, jobject instance, jobject valueId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->PressButton(toValueID(env, valueId)));
+    return jboolean (manager->PressButton(valueIdWrapper->toValueID(env, valueId)));
 }
 
 /*
@@ -1243,7 +1251,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_pressButton
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_releaseButton
         (JNIEnv *env, jobject instance, jobject valueId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->ReleaseButton(toValueID(env, valueId)));
+    return jboolean (manager->ReleaseButton(valueIdWrapper->toValueID(env, valueId)));
 }
 
 /*
@@ -1254,7 +1262,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_releaseButton
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNumSwitchPoints
         (JNIEnv *env, jobject instance, jobject valueId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jint (manager->GetNumSwitchPoints(toValueID(env, valueId)));
+    return jint (manager->GetNumSwitchPoints(valueIdWrapper->toValueID(env, valueId)));
 }
 
 /*
@@ -1265,7 +1273,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNumSwitchPoints
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_setSwitchPoint
         (JNIEnv *env, jobject instance, jobject valueId, jint hours, jint minutes, jint setback){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->SetSwitchPoint(toValueID(env, valueId), toUint8(env, hours), toUint8(env, minutes), toUint8(env, setback)));
+    return jboolean (manager->SetSwitchPoint(valueIdWrapper->toValueID(env, valueId), static_cast<uint8>(hours), static_cast<uint8>(minutes), static_cast<uint8>(setback)));
 }
 
 /*
@@ -1276,7 +1284,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_setSwitchPoint
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_RemoveSwitchPoint
         (JNIEnv *env, jobject instance, jobject valueId, jint hours, jint minutes){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->RemoveSwitchPoint(toValueID(env, valueId), toUint8(env, hours), toUint8(env, minutes)));
+    return jboolean (manager->RemoveSwitchPoint(valueIdWrapper->toValueID(env, valueId), static_cast<uint8>(hours), static_cast<uint8>(minutes)));
 }
 
 /*
@@ -1287,7 +1295,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_RemoveSwitchPoint
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_ClearSwitchPoints
         (JNIEnv *env, jobject instance, jobject valueId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    manager->ClearSwitchPoints(toValueID(env, valueId));
+    manager->ClearSwitchPoints(valueIdWrapper->toValueID(env, valueId));
 }
 
 /*
@@ -1298,11 +1306,11 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_ClearSwitchPoints
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_getSwitchPoint
         (JNIEnv *env, jobject instance, jobject valueId, jint idx, jint hours, jint minutes, jint setback){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    uint8 _idx = toUint8(env, idx);
-    uint8 _hours = toUint8(env, hours);
-    uint8 _minutes = toUint8(env, minutes);
-    uint8 _setBack = toUint8(env, setback);
-    manager->GetSwitchPoint(toValueID(env, valueId), _idx, &_hours, &_minutes, &_setBack);
+    uint8 _idx = static_cast<uint8>(idx);
+    uint8 _hours = static_cast<uint8>(hours);
+    uint8 _minutes = static_cast<uint8>(minutes);
+    uint8 _setBack = static_cast<uint8>(setback);
+    manager->GetSwitchPoint(valueIdWrapper->toValueID(env, valueId), _idx, &_hours, &_minutes, &_setBack);
 }
 
 /*
@@ -1335,7 +1343,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_SwitchAllOff
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_setConfigParam
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId, jint paramId, jint paramValue, jint size){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    jboolean (manager->SetConfigParam(static_cast<const uint32>(homeId), toUint8(env, nodeId), toUint8(env, paramId), toUint32(env, paramValue), toUint8(env, size)));
+    jboolean (manager->SetConfigParam(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId), static_cast<uint8>(paramId), toUint32(env, paramValue), static_cast<uint8>(size)));
 }
 
 /*
@@ -1346,7 +1354,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_setConfigParam
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_requestConfigParam
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId, jint paramId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    manager->RequestConfigParam(static_cast<const uint32>(homeId), toUint8(env, nodeId), toUint8(env, paramId));
+    manager->RequestConfigParam(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId), static_cast<uint8>(paramId));
 }
 
 /*
@@ -1357,7 +1365,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_requestConfigParam
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_requestAllConfigParams
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    manager->RequestAllConfigParams(static_cast<const uint32>(homeId), toUint8(env, nodeId));
+    manager->RequestAllConfigParams(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId));
 }
 
 /*
@@ -1368,7 +1376,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_requestAllConfigParams
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNumGroups
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jint (manager->GetNumGroups(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jint (manager->GetNumGroups(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 
 /*
@@ -1380,7 +1388,7 @@ JNIEXPORT jobjectArray JNICALL Java_org_kyrillos_jozw_Ozw_getAssociations
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId, jint groupId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
     OpenZWave::InstanceAssociation **associations = nullptr;
-    int associatioCount = manager->GetAssociations(static_cast<const uint32>(homeId), toUint8(env, nodeId), toUint8(env, groupId), associations);
+    int associatioCount = manager->GetAssociations(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId), static_cast<uint8>(groupId), associations);
     if (associations != nullptr){
         jclass classId = env->FindClass("");
         for (int i = 0; i < associatioCount; ++i) {
@@ -1399,7 +1407,7 @@ JNIEXPORT jobjectArray JNICALL Java_org_kyrillos_jozw_Ozw_getAssociations
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getMaxAssociations
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId, jint groupId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jint (manager->GetMaxAssociations(static_cast<const uint32>(homeId), toUint8(env, nodeId), toUint8(env, groupId)));
+    return jint (manager->GetMaxAssociations(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId), static_cast<uint8>(groupId)));
 }
 
 /*
@@ -1410,7 +1418,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getMaxAssociations
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getGroupLabel
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId, jint groupId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    const std::string &_label = manager->GetGroupLabel(static_cast<const uint32>(homeId), toUint8(env, nodeId), toUint8(env, groupId));
+    const std::string &_label = manager->GetGroupLabel(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId), static_cast<uint8>(groupId));
     if (_label != nullptr){
         return env->NewStringUTF(_label.data());
     }
@@ -1472,7 +1480,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_cancelControllerCommand
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_testNetworkNode
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId, jint count){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    manager->TestNetworkNode(static_cast<const uint32>(homeId), toUint8(env, nodeId), toUint32(env, count));
+    manager->TestNetworkNode(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId), toUint32(env, count));
 }
 
 /*
@@ -1494,7 +1502,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_testNetwork
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_healNetworkNode
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId, jboolean doRR){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    manager->HealNetworkNode(static_cast<const uint32>(homeId), toUint8(env, nodeId), doRR);
+    manager->HealNetworkNode(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId), doRR);
 }
 
 /*
@@ -1538,7 +1546,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_removeNode
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_removeFailedNode
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->RemoveFailedNode(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jboolean (manager->RemoveFailedNode(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 /*
  * Class:     my_project_openzwave_Manager
@@ -1548,7 +1556,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_removeFailedNode
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_hasNodeFailed
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->HasNodeFailed(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jboolean (manager->HasNodeFailed(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 
 /*
@@ -1559,7 +1567,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_hasNodeFailed
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_requestNodeNeighborUpdate
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->RequestNodeNeighborUpdate(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jboolean (manager->RequestNodeNeighborUpdate(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 
 /*
@@ -1570,7 +1578,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_requestNodeNeighborUpdate
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_assignReturnRoute
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->AssignReturnRoute(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jboolean (manager->AssignReturnRoute(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 
 /*
@@ -1581,7 +1589,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_assignReturnRoute
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_deleteAllReturnRoutes
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->DeleteAllReturnRoutes(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jboolean (manager->DeleteAllReturnRoutes(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 
 /*
@@ -1592,7 +1600,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_deleteAllReturnRoutes
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_sendNodeInformation
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->SendNodeInformation(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jboolean (manager->SendNodeInformation(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 
 /*
@@ -1625,7 +1633,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_receiveConfiguration
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_replaceFailedNode
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->ReplaceFailedNode(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jboolean (manager->ReplaceFailedNode(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 
 /*
@@ -1647,7 +1655,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_transferPrimaryRole
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_requestNetworkUpdate
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->RequestNetworkUpdate(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jboolean (manager->RequestNetworkUpdate(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 
 /*
@@ -1658,7 +1666,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_requestNetworkUpdate
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_replicationSend
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->ReplicationSend(static_cast<const uint32>(homeId), toUint8(env, nodeId)));
+    return jboolean (manager->ReplicationSend(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId)));
 }
 
 /*
@@ -1669,7 +1677,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_replicationSend
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_createButton
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId, jint buttonId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->CreateButton(static_cast<const uint32>(homeId), toUint8(env, nodeId), toUint8(env, buttonId)));
+    return jboolean (manager->CreateButton(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId), static_cast<uint8>(buttonId)));
 }
 
 /*
@@ -1680,7 +1688,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_createButton
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_deleteButton
         (JNIEnv *env, jobject instance, jint homeId, jint nodeId, jint buttonId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->DeleteButton(static_cast<const uint32>(homeId), toUint8(env, nodeId), toUint8(env, buttonId)));
+    return jboolean (manager->DeleteButton(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId), static_cast<uint8>(buttonId)));
 }
 
 /*
@@ -1732,7 +1740,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_createScene
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_removeScene
         (JNIEnv *env, jobject instance, jint sceneId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->RemoveScene(toUint8(env, sceneId)));
+    return jboolean (manager->RemoveScene(static_cast<uint8>(sceneId)));
 }
 
 /*
@@ -1783,7 +1791,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_setSceneValue
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getSceneLabel
         (JNIEnv *env, jobject instance, jint sceneId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    const std::string &label = manager->GetSceneLabel(toUint8(env, sceneId));
+    const std::string &label = manager->GetSceneLabel(static_cast<uint8>(sceneId));
     return env->NewStringUTF(label.data());
 }
 
@@ -1795,7 +1803,7 @@ JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getSceneLabel
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setSceneLabel
         (JNIEnv *env, jobject instance, jint sceneId, jstring label){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    manager->SetSceneLabel(toUint8(env, sceneId), env->GetStringUTFChars(label, nullptr));
+    manager->SetSceneLabel(static_cast<uint8>(sceneId), env->GetStringUTFChars(label, nullptr));
 }
 
 /*
@@ -1806,7 +1814,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setSceneLabel
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_sceneExists
         (JNIEnv *env, jobject instance, jint sceneId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->SceneExists(toUint8(env, sceneId)));
+    return jboolean (manager->SceneExists(static_cast<uint8>(sceneId)));
 }
 
 /*
@@ -1817,5 +1825,5 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_sceneExists
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_activateScene
         (JNIEnv *env, jobject instance, jint sceneId){
     OpenZWave::Manager *manager = OpenZWave::Manager::Get();
-    return jboolean (manager->ActivateScene(toUint8(env, sceneId)));
+    return jboolean (manager->ActivateScene(static_cast<uint8>(sceneId)));
 }

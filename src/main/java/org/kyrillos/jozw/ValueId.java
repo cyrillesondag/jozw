@@ -10,7 +10,8 @@ package org.kyrillos.jozw;
  * @author cyrille
  */
 public class ValueId {
-    
+
+    private long nativePtr;
     private long homeId;
     private short nodeId;
     private int genre;

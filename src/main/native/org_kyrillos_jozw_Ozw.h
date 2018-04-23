@@ -36,7 +36,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_destroy
  * Method:    addDriver
  * Signature: (Ljava/lang/String;I)Z
  */
-JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_addDriver
+JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_doAddDriver
   (JNIEnv *, jobject, jstring, jint);
 
 /*
@@ -205,7 +205,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getPollIntensity
  * Signature: (JS)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_refreshNodeInfo
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -213,7 +213,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_refreshNodeInfo
  * Signature: (JS)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_requestNodeState
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -221,7 +221,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_requestNodeState
  * Signature: (JS)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_requestNodeDynamic
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -229,7 +229,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_requestNodeDynamic
  * Signature: (JS)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeListeningDevice
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -237,7 +237,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeListeningDevice
  * Signature: (JS)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeFrequentListeningDevice
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -245,7 +245,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeFrequentListeningDev
  * Signature: (JS)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeBeamingDevice
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -253,7 +253,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeBeamingDevice
  * Signature: (JS)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeRoutingDevice
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -261,7 +261,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeRoutingDevice
  * Signature: (JS)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeSecurityDevice
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -269,7 +269,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeSecurityDevice
  * Signature: (JS)I
  */
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeMaxBaudRate
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -277,7 +277,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeMaxBaudRate
  * Signature: (JS)I
  */
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeVersion
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -285,7 +285,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeVersion
  * Signature: (JS)I
  */
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeSecurity
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -293,7 +293,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeSecurity
  * Signature: (JS)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeZWavePlus
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -301,7 +301,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeZWavePlus
  * Signature: (JS)I
  */
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeBasic
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -309,7 +309,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeBasic
  * Signature: (JS)I
  */
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeGeneric
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -317,7 +317,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeGeneric
  * Signature: (JS)I
  */
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeSpecific
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -325,7 +325,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeSpecific
  * Signature: (JS)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeType
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -333,7 +333,7 @@ JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeType
  * Signature: (JS)[I
  */
 JNIEXPORT jintArray JNICALL Java_org_kyrillos_jozw_Ozw_getNodeNeighbors
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -341,7 +341,7 @@ JNIEXPORT jintArray JNICALL Java_org_kyrillos_jozw_Ozw_getNodeNeighbors
  * Signature: (JS)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeManufacturerName
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -349,7 +349,7 @@ JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeManufacturerName
  * Signature: (JS)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeProductName
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -357,7 +357,7 @@ JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeProductName
  * Signature: (JS)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeName
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -365,7 +365,7 @@ JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeName
  * Signature: (JS)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeLocation
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -373,7 +373,7 @@ JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeLocation
  * Signature: (JS)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeManufacturerId
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -381,7 +381,7 @@ JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeManufacturerId
  * Signature: (JS)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeProductType
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -389,7 +389,7 @@ JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeProductType
  * Signature: (JS)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeProductId
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -397,7 +397,7 @@ JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeProductId
  * Signature: (JSLjava/lang/String;)V
  */
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setNodeManufacturerName
-  (JNIEnv *, jobject, jlong, jshort, jstring);
+  (JNIEnv *, jobject, jlong, jint, jstring);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -405,7 +405,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setNodeManufacturerName
  * Signature: (JSLjava/lang/String;)V
  */
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setNodeProductName
-  (JNIEnv *, jobject, jlong, jshort, jstring);
+  (JNIEnv *, jobject, jlong, jint, jstring);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -413,7 +413,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setNodeProductName
  * Signature: (JSLjava/lang/String;)V
  */
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setNodeName
-  (JNIEnv *, jobject, jlong, jshort, jstring);
+  (JNIEnv *, jobject, jlong, jint, jstring);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -421,7 +421,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setNodeName
  * Signature: (JSLjava/lang/String;)V
  */
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setNodeLocation
-  (JNIEnv *, jobject, jlong, jshort, jstring);
+  (JNIEnv *, jobject, jlong, jint, jstring);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -429,7 +429,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setNodeLocation
  * Signature: (JS)V
  */
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setNodeOn
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -437,7 +437,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setNodeOn
  * Signature: (JS)V
  */
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setNodeOff
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -445,7 +445,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setNodeOff
  * Signature: (JSI)V
  */
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setNodeLevel
-  (JNIEnv *, jobject, jlong, jshort, jint);
+  (JNIEnv *, jobject, jlong, jint, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -453,7 +453,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setNodeLevel
  * Signature: (JS)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeInfoReceived
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -461,7 +461,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeInfoReceived
  * Signature: (JSILjava/lang/String;I)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_getNodeClassInformation
-  (JNIEnv *, jobject, jlong, jshort, jint, jstring, jint);
+  (JNIEnv *, jobject, jlong, jint, jint, jstring, jobject);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -469,7 +469,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_getNodeClassInformation
  * Signature: (JS)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeAwake
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -477,7 +477,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeAwake
  * Signature: (JS)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeFailed
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -485,7 +485,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_isNodeFailed
  * Signature: (JS)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeQueryStage
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -493,7 +493,7 @@ JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeQueryStage
  * Signature: (JS)I
  */
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeDeviceType
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -501,7 +501,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeDeviceType
  * Signature: (JS)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeDeviceTypeString
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -509,7 +509,7 @@ JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeDeviceTypeString
  * Signature: (JS)I
  */
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeRole
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -517,7 +517,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodeRole
  * Signature: (JS)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeRoleString
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -525,7 +525,7 @@ JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodeRoleString
  * Signature: (JS)I
  */
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodePlusType
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -533,7 +533,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNodePlusType
  * Signature: (JS)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getNodePlusTypeString
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -757,7 +757,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_SwitchAllOff
  * Signature: (JSIII)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_setConfigParam
-  (JNIEnv *, jobject, jlong, jshort, jint, jint, jint);
+  (JNIEnv *, jobject, jlong, jint, jint, jint, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -765,7 +765,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_setConfigParam
  * Signature: (JSI)V
  */
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_requestConfigParam
-  (JNIEnv *, jobject, jlong, jshort, jint);
+  (JNIEnv *, jobject, jlong, jint, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -773,7 +773,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_requestConfigParam
  * Signature: (JS)V
  */
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_requestAllConfigParams
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -781,7 +781,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_requestAllConfigParams
  * Signature: (JS)I
  */
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNumGroups
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -789,7 +789,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNumGroups
  * Signature: (JSI)I
  */
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getMaxAssociations
-  (JNIEnv *, jobject, jlong, jshort, jint);
+  (JNIEnv *, jobject, jlong, jint, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -797,7 +797,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getMaxAssociations
  * Signature: (JSI)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getGroupLabel
-  (JNIEnv *, jobject, jlong, jshort, jint);
+  (JNIEnv *, jobject, jlong, jint, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -805,7 +805,7 @@ JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getGroupLabel
  * Signature: (JSIII)V
  */
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_addAssociation
-  (JNIEnv *, jobject, jlong, jshort, jint, jint, jint);
+  (JNIEnv *, jobject, jlong, jint, jint, jint, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -813,7 +813,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_addAssociation
  * Signature: (JSIII)V
  */
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_removeAssociation
-  (JNIEnv *, jobject, jlong, jshort, jint, jint, jint);
+  (JNIEnv *, jobject, jlong, jint, jint, jint, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -845,7 +845,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_cancelControllerCommand
  * Signature: (JSI)V
  */
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_testNetworkNode
-  (JNIEnv *, jobject, jlong, jshort, jint);
+  (JNIEnv *, jobject, jlong, jint, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -861,7 +861,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_testNetwork
  * Signature: (JSZ)V
  */
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_healNetworkNode
-  (JNIEnv *, jobject, jlong, jshort, jboolean);
+  (JNIEnv *, jobject, jlong, jint, jboolean);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -893,7 +893,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_removeNode
  * Signature: (JS)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_removeFailedNode
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -901,7 +901,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_removeFailedNode
  * Signature: (JS)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_hasNodeFailed
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -909,7 +909,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_hasNodeFailed
  * Signature: (JS)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_requestNodeNeighborUpdate
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -917,7 +917,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_requestNodeNeighborUpdate
  * Signature: (JS)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_assignReturnRoute
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -925,7 +925,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_assignReturnRoute
  * Signature: (JS)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_deleteAllReturnRoutes
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -933,7 +933,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_deleteAllReturnRoutes
  * Signature: (JS)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_sendNodeInformation
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -957,7 +957,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_receiveConfiguration
  * Signature: (JS)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_replaceFailedNode
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -973,7 +973,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_transferPrimaryRole
  * Signature: (JS)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_requestNetworkUpdate
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -981,7 +981,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_requestNetworkUpdate
  * Signature: (JS)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_replicationSend
-  (JNIEnv *, jobject, jlong, jshort);
+  (JNIEnv *, jobject, jlong, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -989,7 +989,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_replicationSend
  * Signature: (JSS)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_createButton
-  (JNIEnv *, jobject, jlong, jshort, jshort);
+  (JNIEnv *, jobject, jlong, jint, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -997,7 +997,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_createButton
  * Signature: (JSS)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_deleteButton
-  (JNIEnv *, jobject, jlong, jshort, jshort);
+  (JNIEnv *, jobject, jlong, jint, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -1012,7 +1012,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_getNumScenes
  * Method:    getAllScenes
  * Signature: ()[S
  */
-JNIEXPORT jshortArray JNICALL Java_org_kyrillos_jozw_Ozw_getAllScenes
+JNIEXPORT jintArray JNICALL Java_org_kyrillos_jozw_Ozw_getAllScenes
   (JNIEnv *, jobject);
 
 /*
@@ -1028,7 +1028,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_removeAllScenes
  * Method:    createScene
  * Signature: ()S
  */
-JNIEXPORT jshort JNICALL Java_org_kyrillos_jozw_Ozw_createScene
+JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_createScene
   (JNIEnv *, jobject);
 
 /*
@@ -1037,7 +1037,7 @@ JNIEXPORT jshort JNICALL Java_org_kyrillos_jozw_Ozw_createScene
  * Signature: (S)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_removeScene
-  (JNIEnv *, jobject, jshort);
+  (JNIEnv *, jobject, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -1045,7 +1045,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_removeScene
  * Signature: (SLorg/kyrillos/jozw/ValueId;)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_removeSceneValue
-  (JNIEnv *, jobject, jshort, jobject);
+  (JNIEnv *, jobject, jint, jobject);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -1053,7 +1053,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_removeSceneValue
  * Signature: (S[Lorg/kyrillos/jozw/ValueId;)I
  */
 JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_sceneGetValues
-  (JNIEnv *, jobject, jshort, jobjectArray);
+  (JNIEnv *, jobject, jint, jobjectArray); //TODO
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -1061,7 +1061,7 @@ JNIEXPORT jint JNICALL Java_org_kyrillos_jozw_Ozw_sceneGetValues
  * Signature: (S)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getSceneLabel
-  (JNIEnv *, jobject, jshort);
+  (JNIEnv *, jobject, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -1069,7 +1069,7 @@ JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getSceneLabel
  * Signature: (SLjava/lang/String;)V
  */
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setSceneLabel
-  (JNIEnv *, jobject, jshort, jstring);
+  (JNIEnv *, jobject, jint, jstring);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -1077,7 +1077,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_setSceneLabel
  * Signature: (S)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_sceneExists
-  (JNIEnv *, jobject, jshort);
+  (JNIEnv *, jobject, jint);
 
 /*
  * Class:     org_kyrillos_jozw_Ozw
@@ -1085,7 +1085,7 @@ JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_sceneExists
  * Signature: (S)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_kyrillos_jozw_Ozw_activateScene
-  (JNIEnv *, jobject, jshort);
+  (JNIEnv *, jobject, jint);
 
 #ifdef __cplusplus
 }

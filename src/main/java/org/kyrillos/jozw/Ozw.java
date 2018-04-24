@@ -211,212 +211,212 @@ public class Ozw {
     /**
      * Trigger the fetching of fixed data about a node. Causes the node's data to be obtained from the Z-Wave network in the same way as if it had just been added. This method would normally be called automatically by OpenZWave, but if you know that a node has been changed, calling this method will force a refresh of all of the data held by the library. This can be especially useful for devices that were asleep when the application was first run. This is the same as the query state starting from the beginning.
      */
-    public native boolean refreshNodeInfo(long homeId, short nodeId);
+    public native boolean refreshNodeInfo(long homeId, int nodeId);
 
     /**
      * Trigger the fetching of dynamic value data for a node. Causes the node's values to be requested from the Z-Wave network. This is the same as the query state starting from the associations state.
      */
-    public native boolean requestNodeState(long homeId, short nodeId);
+    public native boolean requestNodeState(long homeId, int nodeId);
 
     /**
      * Trigger the fetching of just the dynamic value data for a node. Causes the node's values to be requested from the Z-Wave network. This is the same as the query state starting from the dynamic state.
      */
-    public native boolean requestNodeDynamic(long homeId, short nodeId);
+    public native boolean requestNodeDynamic(long homeId, int nodeId);
 
     /**
      * get whether the node is a listening device that does not go to sleep.
      */
-    public native boolean isNodeListeningDevice(long homeId, short nodeId);
+    public native boolean isNodeListeningDevice(long homeId, int nodeId);
 
     /**
      * get whether the node is a frequent listening device that goes to sleep but can be woken up by a beam. Useful to determine node and controller consistency.
      */
-    public native boolean isNodeFrequentListeningDevice(long homeId, short nodeId);
+    public native boolean isNodeFrequentListeningDevice(long homeId, int nodeId);
 
     /**
      * get whether the node is a beam capable device.
      */
-    public native boolean isNodeBeamingDevice(long homeId, short nodeId);
+    public native boolean isNodeBeamingDevice(long homeId, int nodeId);
 
     /**
      * get whether the node is a routing device that passes messages to other nodes.
      */
-    public native boolean isNodeRoutingDevice(long homeId, short nodeId);
+    public native boolean isNodeRoutingDevice(long homeId, int nodeId);
 
     /**
      * get the security attribute for a node. True if node supports security features.
      */
-    public native boolean isNodeSecurityDevice(long homeId, short nodeId);
+    public native boolean isNodeSecurityDevice(long homeId, int nodeId);
 
     /**
      * get the maximum baud rate of a node's communications.
      */
-    public native int getNodeMaxBaudRate(long homeId, short nodeId);
+    public native int getNodeMaxBaudRate(long homeId, int nodeId);
 
     /**
      * get the version number of a node.
      */
-    public native int getNodeVersion(long homeId, short nodeId);
+    public native int getNodeVersion(long homeId, int nodeId);
 
     /**
      * get the security int of a node.
      */
-    public native int getNodeSecurity(long homeId, short nodeId);
+    public native int getNodeSecurity(long homeId, int nodeId);
 
     /**
      * Is this a ZWave+ Supported Node?
      */
-    public native boolean isNodeZWavePlus(long homeId, short nodeId);
+    public native boolean isNodeZWavePlus(long homeId, int nodeId);
 
     /**
      * get the basic type of a node.
      */
-    public native int getNodeBasic(long homeId, short nodeId);
+    public native int getNodeBasic(long homeId, int nodeId);
 
     /**
      * get the generic type of a node.
      */
-    public native int getNodeGeneric(long homeId, short nodeId);
+    public native int getNodeGeneric(long homeId, int nodeId);
 
     /**
      * get the specific type of a node.
      */
-    public native int getNodeSpecific(long homeId, short nodeId);
+    public native int getNodeSpecific(long homeId, int nodeId);
 
     /**
      * get a human-readable label describing the node The label is taken from the Z-Wave specific, generic or basic type, depending on which of those values are specified by the node.
      */
-    public native String getNodeType(long homeId, short nodeId);
+    public native String getNodeType(long homeId, int nodeId);
 
     /**
      * get the bitmap of this node's neighbors.
      */
-    public native int[] getNodeNeighbors(long homeId, short nodeId);
+    public native int[] getNodeNeighbors(long homeId, int nodeId);
 
     /**
      * get the manufacturer name of a device The manufacturer name would normally be handled by the Manufacturer Specific command class, taking the manufacturer ID reported by the device and using it to look up the name from the manufacturerspecific.xml file in the OpenZWave config folder. However, there are some devices that do not support the command class, so to enable the user to manually set the name, it is stored with the node data and accessed via this method rather than being reported via a command class Value object.
      */
-    public native String getNodeManufacturerName(long homeId, short nodeId);
+    public native String getNodeManufacturerName(long homeId, int nodeId);
 
     /**
      * get the product name of a device The product name would normally be handled by the Manufacturer Specific command class, taking the product Type and ID reported by the device and using it to look up the name from the manufacturerspecific.xml file in the OpenZWave config folder. However, there are some devices that do not support the command class, so to enable the user to manually set the name, it is stored with the node data and accessed via this method rather than being reported via a command class Value object.
      */
-    public native String getNodeProductName(long homeId, short nodeId);
+    public native String getNodeProductName(long homeId, int nodeId);
 
     /**
      * get the name of a node The node name is a user-editable label for the node that would normally be handled by the Node Naming command class, but many devices do not support it. So that a node can always be named, OpenZWave stores it with the node data, and provides access through this method and setNodeName, rather than reporting it via a command class Value object. The maximum length of a node name is 16 characters.
      */
-    public native String getNodeName(long homeId, short nodeId);
+    public native String getNodeName(long homeId, int nodeId);
 
     /**
      * get the location of a node The node location is a user-editable String that would normally be handled by the Node Naming command class, but many devices do not support it. So that a node can always report its location, OpenZWave stores it with the node data, and provides access through this method and setNodeLocation, rather than reporting it via a command class Value object.
      */
-    public native String getNodeLocation(long homeId, short nodeId);
+    public native String getNodeLocation(long homeId, int nodeId);
 
     /**
      * get the manufacturer ID of a device The manufacturer ID is a four digit hex code and would normally be handled by the Manufacturer Specific command class, but not all devices support it. Although the value reported by this method will be an empty String if the command class is not supported and cannot be set by the user, the manufacturer ID is still stored with the node data (rather than being reported via a command class Value object); to retain a consistent approach with the other manufacturer specific data.
      */
-    public native String getNodeManufacturerId(long homeId, short nodeId);
+    public native String getNodeManufacturerId(long homeId, int nodeId);
 
     /**
      * get the product type of a device The product type is a four digit hex code and would normally be handled by the Manufacturer Specific command class, but not all devices support it. Although the value reported by this method will be an empty String if the command class is not supported and cannot be set by the user, the product type is still stored with the node data (rather than being reported via a command class Value object); to retain a consistent approach with the other manufacturer specific data.
      */
-    public native String getNodeProductType(long homeId, short nodeId);
+    public native String getNodeProductType(long homeId, int nodeId);
 
     /**
      * get the product ID of a device The product ID is a four digit hex code and would normally be handled by the Manufacturer Specific command class, but not all devices support it. Although the value reported by this method will be an empty String if the command class is not supported and cannot be set by the user, the product ID is still stored with the node data (rather than being reported via a command class Value object); to retain a consistent approach with the other manufacturer specific data.
      */
-    public native String getNodeProductId(long homeId, short nodeId);
+    public native String getNodeProductId(long homeId, int nodeId);
 
     /**
      * set the manufacturer name of a device The manufacturer name would normally be handled by the Manufacturer Specific command class, taking the manufacturer ID reported by the device and using it to look up the name from the manufacturerspecific.xml file in the OpenZWave config folder. However, there are some devices that do not support the command class, so to enable the user to manually set the name, it is stored with the node data and accessed via this method rather than being reported via a command class Value object.
      */
-    public native void setNodeManufacturerName(long homeId, short nodeId, String manufacturerName);
+    public native void setNodeManufacturerName(long homeId, int nodeId, String manufacturerName);
 
     /**
      * set the product name of a device The product name would normally be handled by the Manufacturer Specific command class, taking the product Type and ID reported by the device and using it to look up the name from the manufacturerspecific.xml file in the OpenZWave config folder. However, there are some devices that do not support the command class, so to enable the user to manually set the name, it is stored with the node data and accessed via this method rather than being reported via a command class Value object.
      */
-    public native void setNodeProductName(long homeId, short nodeId, String productName);
+    public native void setNodeProductName(long homeId, int nodeId, String productName);
 
     /**
      * set the name of a node The node name is a user-editable label for the node that would normally be handled by the Node Naming command class, but many devices do not support it. So that a node can always be named, OpenZWave stores it with the node data, and provides access through this method and getNodeName, rather than reporting it via a command class Value object. If the device does support the Node Naming command class, the new name will be sent to the node. The maximum length of a node name is 16 characters.
      */
-    public native void setNodeName(long homeId, short nodeId, String nodeName);
+    public native void setNodeName(long homeId, int nodeId, String nodeName);
 
     /**
      * set the location of a node The node location is a user-editable String that would normally be handled by the Node Naming command class, but many devices do not support it. So that a node can always report its location, OpenZWave stores it with the node data, and provides access through this method and getNodeLocation, rather than reporting it via a command class Value object. If the device does support the Node Naming command class, the new location will be sent to the node.
      */
-    public native void setNodeLocation(long homeId, short nodeId, String location);
+    public native void setNodeLocation(long homeId, int nodeId, String location);
 
     /**
      * Turns a node on This is a helper method to simplify basic control of a node. It is the equivalent of changing the level reported by the node's Basic command class to 255, and will generate a ValueChanged notification from that class. This command will turn on the device at its last known level, if supported by the device, otherwise it will turn it on at 100%.
      */
-    public native void setNodeOn(long homeId, short nodeId);
+    public native void setNodeOn(long homeId, int nodeId);
 
     /**
      * Turns a node off This is a helper method to simplify basic control of a node. It is the equivalent of changing the level reported by the node's Basic command class to zero, and will generate a ValueChanged notification from that class.
      */
-    public native void setNodeOff(long homeId, short nodeId);
+    public native void setNodeOff(long homeId, int nodeId);
 
     /**
      * sets the basic level of a node This is a helper method to simplify basic control of a node. It is the equivalent of changing the value reported by the node's Basic command class and will generate a ValueChanged notification from that class.
      */
-    public native void setNodeLevel(long homeId, short nodeId, int level);
+    public native void setNodeLevel(long homeId, int nodeId, int level);
 
     /**
      * get whether the node information has been received.
      */
-    public native boolean isNodeInfoReceived(long homeId, short nodeId);
+    public native boolean isNodeInfoReceived(long homeId, int nodeId);
 
     /**
      * get whether the node has the defined class available or not.
      */
-    public native boolean getNodeClassInformation(long homeId, short nodeId, int commandClassId, String className, int classVersion);
+    public native boolean getNodeClassInformation(long homeId, int nodeId, int commandClassId, String className, Integer classVersion);
 
     /**
      * get whether the node is awake or asleep.
      */
-    public native boolean isNodeAwake(long homeId, short nodeId);
+    public native boolean isNodeAwake(long homeId, int nodeId);
 
     /**
      * get whether the node is working or has failed.
      */
-    public native boolean isNodeFailed(long homeId, short nodeId);
+    public native boolean isNodeFailed(long homeId, int nodeId);
 
     /**
      * get whether the node's query stage as a String.
      */
-    public native String getNodeQueryStage(long homeId, short nodeId);
+    public native String getNodeQueryStage(long homeId, int nodeId);
 
     /**
      * get the node device type as reported in the Z-Wave+ Info report.
      */
-    public native int getNodeDeviceType(long homeId, short nodeId);
+    public native int getNodeDeviceType(long homeId, int nodeId);
 
     /**
      * get the node device type as reported in the Z-Wave+ Info report.
      */
-    public native String getNodeDeviceTypeString(long homeId, short nodeId);
+    public native String getNodeDeviceTypeString(long homeId, int nodeId);
 
     /**
      * get the node role as reported in the Z-Wave+ Info report.
      */
-    public native int getNodeRole(long homeId, short nodeId);
+    public native int getNodeRole(long homeId, int nodeId);
 
     /**
      * get the node role as reported in the Z-Wave+ Info report.
      */
-    public native String getNodeRoleString(long homeId, short nodeId);
+    public native String getNodeRoleString(long homeId, int nodeId);
 
     /**
      * get the node PlusType as reported in the Z-Wave+ Info report.
      */
-    public native int getNodePlusType(long homeId, short nodeId);
+    public native int getNodePlusType(long homeId, int nodeId);
 
     /**
      * get the node PlusType as reported in the Z-Wave+ Info report.
      */
-    public native String getNodePlusTypeString(long homeId, short nodeId);
+    public native String getNodePlusTypeString(long homeId, int nodeId);
 
     // Values
     // Methods for accessing device values. All the methods require a ValueId, which will have been provided in the ValueAdded Notification callback when the the value was first discovered by OpenZWave.
@@ -571,17 +571,17 @@ public class Ozw {
     /**
      * set the value of a configurable parameter in a device. Some devices have various parameters that can be configured to control the device behavior. These are not reported by the device over the Z-Wave network, but can usually be found in the device's user manual. This method returns immediately, without waiting for confirmation from the device that the change has been made.
      */
-    public native boolean setConfigParam(long homeId, short nodeId, int param, int value, int size);
+    public native boolean setConfigParam(long homeId, int nodeId, int param, int value, int size);
 
     /**
      * Request the value of a configurable parameter from a device. Some devices have various parameters that can be configured to control the device behavior. These are not reported by the device over the Z-Wave network, but can usually be found in the device's user manual. This method requests the value of a parameter from the device, and then returns immediately, without waiting for a response. If the parameter index is valid for this device, and the device is awake, the value will eventually be reported via a ValueChanged notification callback. The ValueId reported in the callback will have an index set the same as param and a command class set to the same value as returned by a call to Configuration::StaticGetCommandClassId.
      */
-    public native void requestConfigParam(long homeId, short nodeId, int param);
+    public native void requestConfigParam(long homeId, int nodeId, int param);
 
     /**
      * Request the values of all known configurable parameters from a device.
      */
-    public native void requestAllConfigParams(long homeId, short nodeId);
+    public native void requestAllConfigParams(long homeId, int nodeId);
 
     // Groups
     // Methods for accessing device association groups.
@@ -589,27 +589,27 @@ public class Ozw {
     /**
      * gets the number of association groups reported by this node In Z-Wave, groups are numbered starting from one. For example, if a call to getNumGroups returns 4, the groupIdx value to use in calls to getAssociations, AddAssociation and RemoveAssociation will be a number between 1 and 4.
      */
-    public native int getNumGroups(long homeId, short nodeId);
+    public native int getNumGroups(long homeId, int nodeId);
 
     /**
      * gets the maximum number of associations for a group.
      */
-    public native int getMaxAssociations(long homeId, short nodeId, int groupIdx);
+    public native int getMaxAssociations(long homeId, int nodeId, int groupIdx);
 
     /**
      * Returns a label for the particular group of a node. This label is populated by the device specific configuration files.
      */
-    public native String getGroupLabel(long homeId, short nodeId, int groupIdx);
+    public native String getGroupLabel(long homeId, int nodeId, int groupIdx);
 
     /**
      * Adds a node to an association group. Due to the possibility of a device being asleep, the command is assumed to succeed, and the association data held in this class is updated directly. This will be reverted by a future Association message from the device if the Z-Wave message actually failed to get through. Notification callbacks will be sent in both cases.
      */
-    public native void addAssociation(long homeId, short nodeId, int groupIdx, int targetNodeId, int instance);
+    public native void addAssociation(long homeId, int nodeId, int groupIdx, int targetNodeId, int instance);
 
     /**
      * Removes a node from an association group. Due to the possibility of a device being asleep, the command is assumed to succeed, and the association data held in this class is updated directly. This will be reverted by a future Association message from the device if the Z-Wave message actually failed to get through. Notification callbacks will be sent in both cases.
      */
-    public native void removeAssociation(long homeId, short nodeId, int groupIdx, int targetNodeId, int instance);
+    public native void removeAssociation(long homeId, int nodeId, int groupIdx, int targetNodeId, int instance);
 
     // Controller Commands */
     // Commands for Z-Wave network management using the PC Controller. */
@@ -628,7 +628,7 @@ public class Ozw {
     // * Start a controller command process. Most Controller Commands are implemented via Other Manager methods, you should only use this method if you need advanced control over a existing Controller Command or if a ControllerCommand is not implemented.
     // */
     //@Deprecated
-    //public native boolean BeginControllerCommand(long homeId, Driver::ControllerCommand command, Driver::pfnControllerCallbackt callback=NULL, void context=NULL, boolean highPower=false, short nodeId=0xff, int arg=0);
+    //public native boolean BeginControllerCommand(long homeId, Driver::ControllerCommand command, Driver::pfnControllerCallbackt callback=NULL, void context=NULL, boolean highPower=false, int nodeId=0xff, int arg=0);
 
     /**
      * Cancels any in-progress command running on a controller.
@@ -641,7 +641,7 @@ public class Ozw {
     /**
      * Test network node. Sends a series of messages to a network node for testing network reliability.
      */
-    public native void testNetworkNode(long homeId, short nodeId, int count);
+    public native void testNetworkNode(long homeId, int nodeId, int count);
 
     /**
      * Test network. Sends a series of messages to every node on the network for testing network reliability.
@@ -651,7 +651,7 @@ public class Ozw {
     /**
      * Heal network node by requesting the node rediscover their neighbors. Sends a ControllerCommandRequestNodeNeighborUpdate to the node.
      */
-    public native void healNetworkNode(long homeId, short nodeId, boolean doRR);
+    public native void healNetworkNode(long homeId, int nodeId, boolean doRR);
 
     /**
      * Heal network by requesting node's rediscover their neighbors. Sends a ControllerCommandRequestNodeNeighborUpdate to every node. Can take a while on larger networks.
@@ -671,32 +671,32 @@ public class Ozw {
     /**
      * Remove a Failed Device from the Z-Wave Network This Command will remove a failed node from the network. The Node should be on the Controllers Failed Node List, otherwise this command will fail. You can use the HasNodeFailed function below to test if the Controller believes the Node has Failed. The Status of the Node Removal is communicated via Notifications. Specifically, you should monitor ControllerCommand Notifications.
      */
-    public native boolean removeFailedNode(long homeId, short nodeId);
+    public native boolean removeFailedNode(long homeId, int nodeId);
 
     /**
      * Check if the Controller Believes a Node has Failed. This is different from the IsNodeFailed call in that we test the Controllers Failed Node List, whereas the IsNodeFailed is testing our list of Failed Nodes, which might be different. The Results will be communicated via Notifications. Specifically, you should monitor the ControllerCommand notifications.
      */
-    public native boolean hasNodeFailed(long homeId, short nodeId);
+    public native boolean hasNodeFailed(long homeId, int nodeId);
 
     /**
      * Ask a Node to update its Neighbor Tables This command will ask a Node to update its Neighbor Tables.
      */
-    public native boolean requestNodeNeighborUpdate(long homeId, short nodeId);
+    public native boolean requestNodeNeighborUpdate(long homeId, int nodeId);
 
     /**
      * Ask a Node to update its update its Return Route to the Controller This command will ask a Node to update its Return Route to the Controller.
      */
-    public native boolean assignReturnRoute(long homeId, short nodeId);
+    public native boolean assignReturnRoute(long homeId, int nodeId);
 
     /**
      * Ask a Node to delete all Return Route. This command will ask a Node to delete all its return routes, and will rediscover when needed.
      */
-    public native boolean deleteAllReturnRoutes(long homeId, short nodeId);
+    public native boolean deleteAllReturnRoutes(long homeId, int nodeId);
 
     /**
      * Send a NIF frame from the Controller to a Node. This command send a NIF frame from the Controller to a Node.
      */
-    public native boolean sendNodeInformation(long homeId, short nodeId);
+    public native boolean sendNodeInformation(long homeId, int nodeId);
 
     /**
      * Create a new primary controller when old primary fails. Requires SUC. This command Creates a new Primary Controller when the Old Primary has Failed. Requires a SUC on the network to function.
@@ -711,7 +711,7 @@ public class Ozw {
     /**
      * Replace a failed device with another. If the node is not in the controller's failed nodes list, or the node responds, this command will fail. You can check if a Node is in the Controllers Failed node list by using the HasNodeFailed method.
      */
-    public native boolean replaceFailedNode(long homeId, short nodeId);
+    public native boolean replaceFailedNode(long homeId, int nodeId);
 
     /**
      * Add a new controller to the network and make it the primary. The existing primary will become a secondary controller.
@@ -721,22 +721,22 @@ public class Ozw {
     /**
      * Update the controller with network information from the SUC/SIS.
      */
-    public native boolean requestNetworkUpdate(long homeId, short nodeId);
+    public native boolean requestNetworkUpdate(long homeId, int nodeId);
 
     /**
      * Send information from primary to secondary.
      */
-    public native boolean replicationSend(long homeId, short nodeId);
+    public native boolean replicationSend(long homeId, int nodeId);
 
     /**
      * Create a handheld button id.
      */
-    public native boolean createButton(long homeId, short nodeId, short buttonId);
+    public native boolean createButton(long homeId, int nodeId, short buttonId);
 
     /**
      * Delete a handheld button id.
      */
-    public native boolean deleteButton(long homeId, short nodeId, short buttonId);
+    public native boolean deleteButton(long homeId, int nodeId, short buttonId);
 
 
     // Commands for Z-Wave scene interface.

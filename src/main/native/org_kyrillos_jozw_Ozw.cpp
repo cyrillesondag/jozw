@@ -656,14 +656,16 @@ JNIEXPORT jintArray JNICALL Java_org_kyrillos_jozw_Ozw_getNodeNeighbors
     numNeighbors = OpenZWave::Manager::Get()->GetNodeNeighbors(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId), &neighbors);
     if(&neighbors == nullptr){
         jint fill[numNeighbors];
-        jintArray _jarray;
-        uint8 n;
+        jintArray _intArray;
         for (int nr = 0; nr < numNeighbors; nr++) {
-            n = neighbors[nr];
-            fill[nr] = static_cast<jint>(n);
+            fill[nr] = static_cast<jint>(neighbors[nr]);
         }
-        _jarray = env->NewIntArray(numNeighbors);
-        env->SetIntArrayRegion(_jarray, 0, numNeighbors, fill);
+        _intArray = env->NewIntArray(numNeighbors);
+        env->SetIntArrayRegion(_intArray, 0, numNeighbors, fill);
+
+        delete neighbors;
+
+        return _intArray;
     }
 }
 
@@ -1343,13 +1345,31 @@ JNIEXPORT jobjectArray JNICALL Java_org_kyrillos_jozw_Ozw_getAssociations
     int associatioCount;
     associatioCount = OpenZWave::Manager::Get()->GetAssociations(static_cast<const uint32>(homeId), static_cast<uint8>(nodeId), static_cast<uint8>(groupId), &associations);
     if (&associations != nullptr){
-        jclass classId = env->FindClass("");
+        jclass classId;
+        jmethodID contructorId;
+        jobject _temp;
+        jobjectArray _objArray;
+
+        classId = env->FindClass("org.kyrillos.jowz.InstanceAssociation");
+        if (classId == nullptr){
+            throwIllegalException(env, "Couldn't find class org.kyrillos.jowz.InstanceAssociation");
+        }
+
+        contructorId = env->GetMethodID(classId, "<init>", "(JJ)V");
+        if(contructorId == nullptr){
+            throwIllegalException(env, "Couldn't find constructor for InstanceAssociation");
+        }
+
+        _objArray = env->NewObjectArray(associatioCount, classId, nullptr);
         for (int i = 0; i < associatioCount; ++i) {
             OpenZWave::InstanceAssociation asso = associations[i];
-            jobject temp[associatioCount];
-            //env->NewObject()
-            //TODO
+            _temp = env->NewObject(classId, contructorId, static_cast<jint>(asso.m_nodeId), static_cast<jint>(asso.m_instance));
+            env->SetObjectArrayElement(_objArray, i, _temp);
         }
+
+        delete associations;
+
+        return _objArray;
     }
 }
 
@@ -1383,7 +1403,7 @@ JNIEXPORT jstring JNICALL Java_org_kyrillos_jozw_Ozw_getGroupLabel
  * Signature: (IIIII)V
  */
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_addAssociation
-        (JNIEnv *env, jobject instance, jlong, jint, jint, jint, jint){
+        (JNIEnv *env, jobject instance, jlong homeId, jint, jint, jint, jint){
     //TODO
 }
 
@@ -1393,7 +1413,7 @@ JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_addAssociation
  * Signature: (IIIII)V
  */
 JNIEXPORT void JNICALL Java_org_kyrillos_jozw_Ozw_removeAssociation
-        (JNIEnv *env, jobject instance, jlong, jint, jint, jint, jint){
+        (JNIEnv *env, jobject instance, jlong homeId, jint, jint, jint, jint){
     //TODO
 }
 
